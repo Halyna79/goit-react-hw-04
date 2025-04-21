@@ -3,15 +3,15 @@ import ImageCard from '../ImageCard/ImageCard';
 
 function ImageGallery({ images, setModalImage }) {
     return (
-        <ul className={s.list}>
-            {images.map(image => {
+        <ul className={s.gallery}>
+            {images.map(image => (
                 <li className={s.item} key={image.id}>
                     <ImageCard
                        image={image}
-                       setModalImage={setModalImage}
+                       onClick={setModalImage}
                     />
                 </li>
-            })}
+            ))}
         </ul>
     )
 }

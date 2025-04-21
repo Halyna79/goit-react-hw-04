@@ -2,7 +2,7 @@ import s from './ErrorMessage.module.css';
 
 function ErrorMessage() {
     return (
-        <p className={s.error}>Failed to load images. Please try again later.</p>
+        <p className={s.error}>Oops... Something went wrong. Try again later.</p>
     )
 }
 

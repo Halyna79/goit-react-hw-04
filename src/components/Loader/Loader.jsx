@@ -3,9 +3,11 @@ import { BarLoader } from 'react-spinners';
 
 function Loader({ isLoading }) {
     return (
-        <div className={s.container}>
-            {isLoading && <BarLoader cssOverride={s.loader} />}
-        </div>
+        isLoading && (
+            <div className={s.container}>
+                <BarLoader cssOverride={s.loader} />
+            </div>
+        )
     );
 }
 

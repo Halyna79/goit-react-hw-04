@@ -1,27 +1,24 @@
 import s from './ImageModal.module.css';
 import ReactModal from 'react-modal';
 
-function ImageModal({ modalImage, setModalImage }) {
+function ImageModal({ image, onClose }) {
     return (
         <ReactModal
-            isOpen={!!modalImage}
-            onRequestClose={() => setModalImage(null)}
+            isOpen={Boolean(image)}
+            onRequestClose={onClose}
             overlayClassName={s.overlay}
-            className={s.content}
+            className={s.modal}
         >
-            <div className={s.container}>
-                <img
-                    className={s.image}
-                    src={modalImage?.urls?.regular}
-                    alt={modalImage?.description}
-                />
-
-                <div className={s.data}>
-                    {!!modalImage?.user?.name && <p className={s.author}>Author: {modalImage?.user?.name}. </p>}
-                    {!!modalImage?.description && <p className={s.description}>{modalImage?.description}</p>}
-                    {!!modalImage?.likes && <p className={s.likes}>{modalImage?.likes} people liked this photo</p>}
+            {image && (
+                <div className={s.content}>
+                    <img src={image.urls.regular} alt={image.alt_description} />
+                    <p><strong>Author</strong> {image.user.name}</p>
+                    <p><strong>Likes</strong> {image.likes}</p>
+                    {image.alt_description && (
+                        <p><strong>Description</strong> {image.alt_description}</p>
+                    )}
                 </div>
-            </div>
+            )}
         </ReactModal>
     );
 }

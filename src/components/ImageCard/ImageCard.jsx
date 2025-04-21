@@ -1,15 +1,15 @@
 import s from './ImageCard.module.css';
 
-function ImageCard({ image, setModalImage }) {
+function ImageCard({ image, onClick }) {
     return (
         <div
-            className={s.container}
-            onClick={() => setModalImage(image)}
+            className={s.card}
+            onClick={() => onClick(image)}
         >
             <img
                 className={s.image}
                 src={image.urls.small}
-                alt={image.description}
+                alt={image.alt_description}
             />
         </div>
     );

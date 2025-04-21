@@ -2,14 +2,14 @@ import s from './LoadMoreBtn.module.css';
 
 function LoadMoreBtn({ onLoadMore }) {
     return (
-        <button
-            className={s.button}
-            onClick={onLoadMore}
-            type='button'
-
-        >
-            Load More
-        </button>
+        <div className={s.wrapper}>
+            <button
+                className={s.button}
+                onClick={onLoadMore}
+            >
+                Load More
+            </button>
+        </div>
     );
 }
 

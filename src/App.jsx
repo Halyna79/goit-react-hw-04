@@ -6,56 +6,62 @@ import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import ImageGallery from './components/ImageGallery/ImageGallery';
 import ImageModal from './components/ImageModal/ImageModal';
 import Loader from './components/Loader/Loader';
-import ReactModal from 'react-modal';
 import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn';
-import { BarLoader } from 'react-spinners';
+import ReactModal from 'react-modal';
 
 ReactModal.setAppElement('#root');
 
 function App() {
   const [search, setSearch] = useState('');
   const [images, setImages] = useState([]);
-  const [page, setPage] = useState(null);
+  const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [modalImage, setModalImage] = useState(null);
   const [isError, setIsError] = useState(false);
+
   const pagesCountRef = useRef(0);
+  const prevSearchRef = useRef('');
 
   useEffect(() => {
     if (!search) return;
+    if (prevSearchRef.current === search && page === 1) return;
     addNextImages();
+    prevSearchRef.current = search;
   }, [search, page]);
-  async function addNextImages() {
+
+  const addNextImages = async () => {
     try {
-      setIsError(false);
       setIsLoading(true);
+      setIsError(false);
       const response = await getImages(search, page);
       pagesCountRef.current = response.total_pages;
-      setImages(imgs => [...imgs, ...response.results]);
+      setImages(prev => [...prev, ...response.results]);
     } catch (err) {
       console.error(err);
       setIsError(true);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
-  function onSubmit(search) {
-    pagesCountRef.current = 0;
+  const onSubmit = newSearch => {
+    if (newSearch === search) return;
     setImages([]);
-    setSearch(search);
     setPage(1);
-  }
-  function onLoadMore() {
-    setPage(p => p + 1);
-  }
-  const shoulShowLoadMoreBtn =
-    images.length > 0 && page < pagesCountRef.current;
+    setSearch(newSearch);
+    pagesCountRef.current = 0;
+  };
+
+  const onLoadMore = () => {
+    setPage(prev => prev + 1);
+  };
+
+  const shouldShowLoadMore =
+    images.length > 0 && page < pagesCountRef.current && !isLoading;
+  
   return (
     <>
-      <div>
-        <Toaster toastOptions={{error: {iconTheme: {primary: '#FFC107'}}}} position='top-right' />
-      </div>
+      <Toaster toastOptions={{ error: { iconTheme: { primary: '#FFC107' } } }} position='top-right' />
       <SearchBar onSubmit={onSubmit} />
       {isError ? (
         <ErrorMessage />
@@ -65,16 +71,23 @@ function App() {
             images={images}
             setModalImage={setModalImage}
           />
-          {shoulShowLoadMoreBtn && <LoadMoreBtn onLoadMore={onLoadMore} />}
+          {shouldShowLoadMore && <LoadMoreBtn onLoadMore={onLoadMore} />}
         </>
       )}
       <Loader isLoading={isLoading} />
       <ImageModal
-        modalImage={modalImage}
-        setModalImage={setModalImage}
+        image={modalImage}
+        onClose={setModalImage}
       />
     </>
   );
 }
+
+  
+//     <>
+//       
+//     </>
+//   );
+// }
 
 export default App

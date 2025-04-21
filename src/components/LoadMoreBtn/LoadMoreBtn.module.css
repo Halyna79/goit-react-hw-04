@@ -1,5 +1,10 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
 .button {
-    display: block;
     margin: 24px auto 0;
     padding: 10px 18px;
     font-size: 16px;
