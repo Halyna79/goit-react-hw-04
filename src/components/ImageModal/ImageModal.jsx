@@ -4,8 +4,8 @@ import ReactModal from 'react-modal';
 function ImageModal({ image, onClose }) {
     return (
         <ReactModal
-            isOpen={Boolean(image)}
-            onRequestClose={onClose}
+            isOpen={!!image}
+            onRequestClose={() => onClose(null)}
             overlayClassName={s.overlay}
             className={s.modal}
         >
